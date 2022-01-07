@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OktaAuthService } from '@okta/okta-angular';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,25 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Bitmosys-frontend';
+  public title = 'My Angular App';
+  public isAuthenticated: boolean;
+
+  constructor(public oktaAuth: OktaAuthService) {
+    this.oktaAuth.$authenticationState.subscribe(
+      (isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated
+    );
+  }
+
+  async login() {
+    await this.oktaAuth.signInWithRedirect();
+  }
+
+  async logout() {
+    await this.oktaAuth.signOut();
+  }
+
+  async ngOnInit() {
+  this.isAuthenticated = await this.oktaAuth.isAuthenticated();
+}
+
 }

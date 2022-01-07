@@ -8,5 +8,10 @@ if (environment.production) {
   enableProdMode();
 }
 
+
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
+
+export class SomeComponent {
+  currentYear: number = new Date().getFullYear();
+}
